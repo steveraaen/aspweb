@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 import axios from 'axios'
 import ReactMapGL, {Marker} from 'react-map-gl';
+import RaisedButton from 'material-ui/RaisedButton';
 class App extends Component {
   constructor(props) {
     super(props)
@@ -12,7 +14,7 @@ class App extends Component {
         height: window.innerHeight,
         latitude: 40.7577,
         longitude: -73.9,
-        zoom: 14
+        zoom: 8
       }
     }
     this.getDaySigns = this.getDaySigns.bind(this)
@@ -29,20 +31,21 @@ class App extends Component {
             height: window.innerHeight,
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-            zoom: 11
+            zoom: 14
           },        
          error: null,
         }, () => {
            this.getDaySigns(this.state.uLongitude, this.state.uLatitude)
-        });
-       
+        });     
       },
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: true,  distanceFilter: 50, timeout: 10 },
             )      
         }.bind(this)) 
   }
-
+  componentDidMount() {
+   
+}
   getDaySigns(ln, la) {
    axios.get('/mon', {
       params: {
@@ -67,17 +70,13 @@ class App extends Component {
     
     return(
         <Marker key={index} latitude={la} longitude={ln} offsetLeft={-20} offsetTop={-10}>
-          <div style={{height: '2px', width: '2px', backgroundColor: 'red'}}></div>
+          <div style={{height: 4, width: 4, borderRadius: 2, backgroundColor: 'red'}}></div>
         </Marker>
       )
     })
   } 
     return (
       <div style={{justifyContent: 'center'}}>
-        <header className="App-header">
-   
-          <h1 className="App-title">ASParker</h1>
-        </header>
         <div>
         <ReactMapGL
         {...this.state.viewport}
@@ -85,6 +84,18 @@ class App extends Component {
         mapboxApiAccessToken={'pk.eyJ1Ijoic3JhYWVuIiwiYSI6ImNqMmt2Y3k4djAwNGczM3IzaWU1a3E1eW8ifQ.dTGNBuW1jqOckGIAEDOUZw'}
       > 
       {mkrs}
+      <div style={{flex: .14, flexDirection: 'row', flexWrap: 'wrap', marginTop: '8em', backgroundColor: 'coral'}}>
+        <div style={{fontSize: 30, textAlign: 'center', color: 'white'}}>
+      <MuiThemeProvider>
+      <RaisedButton label="Default" />
+      <RaisedButton label="Default" />
+      <RaisedButton label="Default" />
+      <RaisedButton label="Default" />
+      <RaisedButton label="Default" />
+      </MuiThemeProvider>
+        </div>
+        <div style={{fontSize: 30, textAlign: 'center', color: 'white'}}>helo</div>
+      </div>
       </ReactMapGL>
 
         </div>
